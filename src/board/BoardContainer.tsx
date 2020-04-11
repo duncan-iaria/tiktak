@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { gameStateStore } from './GameStateStore';
 import { BoardColumn } from './BoardColumn';
+import { PlayerLabel } from './PlayerLabel';
 
 const Board = styled(View)`
   background-color: #333;
@@ -17,17 +18,20 @@ export const BoardContainer = ({}) => {
   } = useContext(gameStateStore);
 
   return (
-    <Board>
-      {boardState.map((tempColumn, index) => {
-        console.log(tempColumn);
-        return (
-          <BoardColumn
-            key={`column-${index}`}
-            column={tempColumn}
-            columnIndex={index}
-          />
-        );
-      })}
-    </Board>
+    <>
+      <PlayerLabel label="Player 1" isActive={true} isFlipped={true} />
+      <Board>
+        {boardState.map((tempColumn, index) => {
+          return (
+            <BoardColumn
+              key={`column-${index}`}
+              column={tempColumn}
+              columnIndex={index}
+            />
+          );
+        })}
+      </Board>
+      <PlayerLabel label="Player 2" isActive={false} />
+    </>
   );
 };

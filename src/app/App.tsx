@@ -1,8 +1,10 @@
 import React from 'react';
 import { SafeAreaView, StatusBar, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import styled from 'styled-components';
 
-import { BoardContainer, PlayerLabel, GameStateProvider } from './board';
+import { Router } from './Router';
+import { GameStateProvider } from '../board';
 
 const AppContainer = styled(SafeAreaView)`
   flex: 1;
@@ -17,18 +19,16 @@ const AppBackground = styled(View)`
 
 const App = () => {
   return (
-    <>
+    <NavigationContainer>
       <StatusBar barStyle="dark-content" />
       <AppBackground>
         <AppContainer>
           <GameStateProvider>
-            <PlayerLabel label="Player 1" isActive={true} isFlipped={true} />
-            <BoardContainer />
-            <PlayerLabel label="Player 2" isActive={false} />
+            <Router />
           </GameStateProvider>
         </AppContainer>
       </AppBackground>
-    </>
+    </NavigationContainer>
   );
 };
 
