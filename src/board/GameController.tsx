@@ -17,15 +17,30 @@ export const GameController = ({
   const evaluateBoard = () => {
     console.log(boardState);
     if (boardState) {
-      evaulateRow();
-      evaluateColumn();
-      evaluateDiagonal();
+      evaulateRows();
+      evaluateColumns();
+      evaluateDiagonals();
+      evaluateDraw();
     }
   };
 
-  const evaulateRow = () => {};
+  const evaulateRows = () => {
+    const rowLength = boardState[0].length;
 
-  const evaluateColumn = () => {
+    // think this could be a map prolly
+    for (let i = rowLength - 1; i >= 0; --i) {
+      const tempRow = boardState.map((tempColumn) => tempColumn[i]);
+      const tempWinner =
+        checkAllVals(tempRow, BoardStateType.X) ||
+        checkAllVals(tempRow, BoardStateType.O);
+
+      if (tempWinner) {
+        endGame(tempWinner);
+      }
+    }
+  };
+
+  const evaluateColumns = () => {
     const tempColumns = boardState.map((tempColumn) => {
       return (
         checkAllVals(tempColumn, BoardStateType.X) ||
@@ -37,9 +52,42 @@ export const GameController = ({
     if (tempWinner) {
       endGame(tempWinner);
     }
+  };
 
-    console.log('tempColumns: ', tempColumns);
-    console.log('winner: ', tempWinner);
+  const evaluateDiagonals = () => {
+    const diag1 = boardState.map((tempColumn, index) => tempColumn[index]);
+    console.log('diag1', diag1);
+
+    const diag2 = boardState.map(
+      (tempColumn, index) => tempColumn[tempColumn.length - 1 - index]
+    );
+    console.log('diag2', diag2);
+
+    // refactor this ugliness
+    const tempWinner =
+      checkAllVals(diag1, BoardStateType.X) ||
+      checkAllVals(diag1, BoardStateType.O) ||
+      checkAllVals(diag2, BoardStateType.X) ||
+      checkAllVals(diag2, BoardStateType.O);
+
+    if (tempWinner) {
+      endGame(tempWinner);
+    }
+  };
+
+  const evaluateDraw = () => {
+    const allBoardValues = boardState.reduce((accumulator, tempColumn) => {
+      return [...accumulator, ...tempColumn.map((tempVal) => tempVal)];
+    }, []);
+
+    console.log('flat board: ', allBoardValues);
+    const isDraw = !allBoardValues.some(
+      (tempValue) => tempValue === BoardStateType.None
+    );
+
+    if (isDraw) {
+      endGame(BoardStateType.None);
+    }
   };
 
   const checkAllVals = (values: BoardStateType[], type: BoardStateType) => {
@@ -54,8 +102,6 @@ export const GameController = ({
     console.log(winner);
     navigation.navigate(Screens.Results);
   };
-
-  const evaluateDiagonal = () => {};
 
   useEffect(() => {
     evaluateBoard();

@@ -6,6 +6,14 @@ const Tile = styled(TouchableOpacity)`
   flex: 1;
   justify-content: center;
   align-items: center;
+
+  color: white;
+  font-size: 16px;
+`;
+
+const TileText = styled(Text)`
+  color: white;
+  font-size: 16px;
 `;
 
 interface IProps {
@@ -16,7 +24,7 @@ interface IProps {
 export const BoardTile = ({ tile, onPress }: IProps) => {
   return (
     <Tile onPress={onPress}>
-      <Text>{tile}</Text>
+      <TileText>{tile}</TileText>
     </Tile>
   );
 };
