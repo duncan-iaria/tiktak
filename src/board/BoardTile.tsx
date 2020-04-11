@@ -14,7 +14,6 @@ interface IProps {
 }
 
 export const BoardTile = ({ tile, onPress }: IProps) => {
-  console.log(tile);
   return (
     <Tile onPress={onPress}>
       <Text>{tile}</Text>

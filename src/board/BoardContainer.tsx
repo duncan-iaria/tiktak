@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { gameStateStore } from './GameStateStore';
 import { BoardColumn } from './BoardColumn';
 import { PlayerLabel } from './PlayerLabel';
+import { GameController } from './GameController';
 
 const Board = styled(View)`
   background-color: #333;
@@ -12,13 +13,13 @@ const Board = styled(View)`
   flex: 6;
 `;
 
-export const BoardContainer = ({}) => {
+export const BoardContainer = ({ navigation }: any) => {
   const {
     state: { boardState },
   } = useContext(gameStateStore);
 
   return (
-    <>
+    <GameController navigation={navigation}>
       <PlayerLabel label="Player 1" isActive={true} isFlipped={true} />
       <Board>
         {boardState.map((tempColumn, index) => {
@@ -32,6 +33,6 @@ export const BoardContainer = ({}) => {
         })}
       </Board>
       <PlayerLabel label="Player 2" isActive={false} />
-    </>
+    </GameController>
   );
 };

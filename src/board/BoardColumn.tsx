@@ -24,7 +24,6 @@ export const BoardColumn = ({ column, columnIndex }: IProps) => {
       return;
     }
 
-    console.log(`hello from ${columnIndex}, ${tileIndex}`);
     dispatch({
       type: GameAction.SetBoardTile,
       payload: {
@@ -33,7 +32,7 @@ export const BoardColumn = ({ column, columnIndex }: IProps) => {
       },
     });
   };
-  console.log(column);
+
   return (
     <Column>
       {column.map((tempBoardTile: BoardStateType, index) => (
