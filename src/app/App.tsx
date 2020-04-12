@@ -1,8 +1,9 @@
 import React from 'react';
-import { SafeAreaView, StatusBar, View } from 'react-native';
+import { SafeAreaView, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 
+import { theme } from '../common';
 import { Router } from './Router';
 import { GameStateProvider } from '../board';
 
@@ -11,23 +12,17 @@ const AppContainer = styled(SafeAreaView)`
   flex-direction: column;
 `;
 
-const AppBackground = styled(View)`
-  flex: 1;
-  background-color: white;
-  flex-direction: column;
-`;
-
 const App = () => {
   return (
     <NavigationContainer>
       <StatusBar barStyle="dark-content" />
-      <AppBackground>
+      <ThemeProvider theme={theme}>
         <AppContainer>
           <GameStateProvider>
             <Router />
           </GameStateProvider>
         </AppContainer>
-      </AppBackground>
+      </ThemeProvider>
     </NavigationContainer>
   );
 };

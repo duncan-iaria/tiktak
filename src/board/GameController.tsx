@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 
-import { gameStateStore, BoardStateType } from './GameStateStore';
-import { Screens } from '../app';
+import { gameStateStore, BoardStateType, GameAction } from './GameStateStore';
+import { Screens } from '../common';
 
 export const GameController = ({
   children,
@@ -12,10 +12,10 @@ export const GameController = ({
 }) => {
   const {
     state: { boardState },
+    dispatch,
   } = useContext(gameStateStore);
 
   const evaluateBoard = () => {
-    console.log(boardState);
     if (boardState) {
       evaulateRows();
       evaluateColumns();
@@ -56,12 +56,10 @@ export const GameController = ({
 
   const evaluateDiagonals = () => {
     const diag1 = boardState.map((tempColumn, index) => tempColumn[index]);
-    console.log('diag1', diag1);
 
     const diag2 = boardState.map(
       (tempColumn, index) => tempColumn[tempColumn.length - 1 - index]
     );
-    console.log('diag2', diag2);
 
     // refactor this ugliness
     const tempWinner =
@@ -80,7 +78,6 @@ export const GameController = ({
       return [...accumulator, ...tempColumn.map((tempVal) => tempVal)];
     }, []);
 
-    console.log('flat board: ', allBoardValues);
     const isDraw = !allBoardValues.some(
       (tempValue) => tempValue === BoardStateType.None
     );
@@ -99,8 +96,8 @@ export const GameController = ({
   };
 
   const endGame = (winner: BoardStateType) => {
-    console.log(winner);
-    navigation.navigate(Screens.Results);
+    dispatch({ type: GameAction.ResetGameBoard, payload: null });
+    navigation.navigate(Screens.Results, { winner });
   };
 
   useEffect(() => {

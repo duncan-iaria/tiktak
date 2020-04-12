@@ -2,18 +2,21 @@ import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import styled from 'styled-components';
 
+import { BoardStateType } from './GameStateStore';
+
 const Tile = styled(TouchableOpacity)`
   flex: 1;
   justify-content: center;
   align-items: center;
-
-  color: white;
-  font-size: 16px;
 `;
 
-const TileText = styled(Text)`
-  color: white;
-  font-size: 16px;
+const TileText = styled(Text)<{ player: BoardStateType }>`
+  color: ${(props) =>
+    props.player === BoardStateType.X
+      ? props.theme.colors.primary
+      : props.theme.colors.secondary};
+  font-size: 64px;
+  font-family: 'FredokaOne-Regular';
 `;
 
 interface IProps {
@@ -24,7 +27,7 @@ interface IProps {
 export const BoardTile = ({ tile, onPress }: IProps) => {
   return (
     <Tile onPress={onPress}>
-      <TileText>{tile}</TileText>
+      <TileText player={tile}>{tile}</TileText>
     </Tile>
   );
 };

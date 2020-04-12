@@ -6,13 +6,15 @@ const LabelContainer = styled(View)<{ isFlipped: boolean }>`
   flex: 1;
   padding: 12px;
   align-items: center;
-  justify-content: ${(props) => (props.isFlipped ? 'flex-end' : 'flex-start')};
+  /* justify-content: ${(props) =>
+    props.isFlipped ? 'flex-end' : 'flex-start'}; */
+  justify-content: center;
 `;
 
 const LabelText = styled(Text)<{ isFlipped: boolean; isActive: boolean }>`
-  font-size: ${(props) => (props.isActive ? '48px' : '24px')};
+  font-family: ${(props) => props.theme.defaultFontFamily};
+  font-size: ${(props) => (props.isActive ? '36px' : '24px')};
   transform: ${(props) => (props.isFlipped ? 'rotate(180deg)' : '')};
-  /* transform: rotate(180deg); */
 `;
 
 interface IProps {

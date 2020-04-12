@@ -14,6 +14,7 @@ enum BoardStateType {
 enum GameAction {
   SetGameState = 'SET_GAME_STATE',
   SetBoardTile = 'SET_BOARD_TILE',
+  ResetGameBoard = 'RESET_GAME_BOARD',
 }
 
 enum GameState {
@@ -68,6 +69,15 @@ const gameStateReducer: Reducer<IGameState, IGameStateAction> = (
             : GameState.Player1,
         boardState: updateBoardState(state, action),
       };
+
+    case GameAction.ResetGameBoard:
+      return {
+        ...state,
+        gameState: GameState.Player1,
+        boardState: [
+          ...initialBoardState.map((tempBoardState) => tempBoardState),
+        ],
+      };
     default:
       console.warn(`no action found for that action type: ${action.type}`);
       return state;
@@ -108,4 +118,10 @@ const GameStateProvider = ({ children }: any) => {
 
 const { Provider } = gameStateStore;
 
-export { gameStateStore, GameStateProvider, GameAction, BoardStateType };
+export {
+  gameStateStore,
+  GameStateProvider,
+  GameAction,
+  GameState,
+  BoardStateType,
+};
