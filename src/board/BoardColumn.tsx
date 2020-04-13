@@ -16,15 +16,17 @@ interface IProps {
 }
 
 export const BoardColumn = ({ column, columnIndex }: IProps) => {
-  const { dispatch } = useContext(gameStateStore);
+  const {
+    dispatch,
+    state: { isGameOver },
+  } = useContext(gameStateStore);
 
   const onPressed = (tileIndex: number, tileValue: BoardStateType) => {
-    if (tileValue) {
-      // already has a value, do no action
+    if (tileValue || isGameOver) {
+      // already has a value, do no action or game is already over
       return;
     }
 
-    console.log(`hello from ${columnIndex}, ${tileIndex}`);
     dispatch({
       type: GameAction.SetBoardTile,
       payload: {
@@ -33,7 +35,7 @@ export const BoardColumn = ({ column, columnIndex }: IProps) => {
       },
     });
   };
-  console.log(column);
+
   return (
     <Column>
       {column.map((tempBoardTile: BoardStateType, index) => (
