@@ -3,6 +3,9 @@ import { useContext, useEffect } from 'react';
 import { gameStateStore, BoardStateType, GameAction } from './GameStateStore';
 import { Screens } from '../common';
 
+const GAME_WIN_DELAY = 500;
+const GAME_DRAW_DELAY = 100;
+
 export const GameController = ({
   children,
   navigation,
@@ -11,12 +14,12 @@ export const GameController = ({
   navigation: any;
 }) => {
   const {
-    state: { boardState },
+    state: { boardState, isGameOver },
     dispatch,
   } = useContext(gameStateStore);
 
   const evaluateBoard = () => {
-    if (boardState) {
+    if (boardState && !isGameOver) {
       evaulateRows();
       evaluateColumns();
       evaluateDiagonals();
@@ -27,12 +30,11 @@ export const GameController = ({
   const evaulateRows = () => {
     const rowLength = boardState[0].length;
 
-    // think this could be a map prolly
     for (let i = rowLength - 1; i >= 0; --i) {
       const tempRow = boardState.map((tempColumn) => tempColumn[i]);
       const tempWinner =
-        checkAllVals(tempRow, BoardStateType.X) ||
-        checkAllVals(tempRow, BoardStateType.O);
+        checkForConsistentValues(tempRow, BoardStateType.X) ||
+        checkForConsistentValues(tempRow, BoardStateType.O);
 
       if (tempWinner) {
         endGame(tempWinner);
@@ -43,8 +45,8 @@ export const GameController = ({
   const evaluateColumns = () => {
     const tempColumns = boardState.map((tempColumn) => {
       return (
-        checkAllVals(tempColumn, BoardStateType.X) ||
-        checkAllVals(tempColumn, BoardStateType.O)
+        checkForConsistentValues(tempColumn, BoardStateType.X) ||
+        checkForConsistentValues(tempColumn, BoardStateType.O)
       );
     });
 
@@ -63,10 +65,10 @@ export const GameController = ({
 
     // refactor this ugliness
     const tempWinner =
-      checkAllVals(diag1, BoardStateType.X) ||
-      checkAllVals(diag1, BoardStateType.O) ||
-      checkAllVals(diag2, BoardStateType.X) ||
-      checkAllVals(diag2, BoardStateType.O);
+      checkForConsistentValues(diag1, BoardStateType.X) ||
+      checkForConsistentValues(diag1, BoardStateType.O) ||
+      checkForConsistentValues(diag2, BoardStateType.X) ||
+      checkForConsistentValues(diag2, BoardStateType.O);
 
     if (tempWinner) {
       endGame(tempWinner);
@@ -87,7 +89,10 @@ export const GameController = ({
     }
   };
 
-  const checkAllVals = (values: BoardStateType[], type: BoardStateType) => {
+  const checkForConsistentValues = (
+    values: BoardStateType[],
+    type: BoardStateType
+  ) => {
     if (values.every((value) => value === type)) {
       return type;
     }
@@ -96,8 +101,14 @@ export const GameController = ({
   };
 
   const endGame = (winner: BoardStateType) => {
-    dispatch({ type: GameAction.ResetGameBoard, payload: null });
-    navigation.navigate(Screens.Results, { winner });
+    dispatch({ type: GameAction.SetGameOver, payload: null });
+
+    setTimeout(
+      () => {
+        navigation.navigate(Screens.Results, { winner });
+      },
+      winner === BoardStateType.None ? GAME_DRAW_DELAY : GAME_WIN_DELAY
+    );
   };
 
   useEffect(() => {

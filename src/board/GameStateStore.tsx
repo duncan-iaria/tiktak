@@ -15,10 +15,10 @@ enum GameAction {
   SetGameState = 'SET_GAME_STATE',
   SetBoardTile = 'SET_BOARD_TILE',
   ResetGameBoard = 'RESET_GAME_BOARD',
+  SetGameOver = 'SET_GAME_OVER',
 }
 
 enum GameState {
-  Init = 'INIT',
   Player1 = 'PLAYER_1',
   Player2 = 'PLAYER_2',
 }
@@ -29,6 +29,7 @@ enum GameState {
 type Board = Array<Array<BoardStateType>>;
 
 interface IGameState {
+  isGameOver: boolean;
   gameState: GameState;
   boardState: Board;
 }
@@ -40,6 +41,7 @@ const initialBoardState: Board = [
 ];
 
 const initialStoreState = {
+  isGameOver: false,
   gameState: GameState.Player1,
   boardState: [...initialBoardState],
 };
@@ -69,10 +71,15 @@ const gameStateReducer: Reducer<IGameState, IGameStateAction> = (
             : GameState.Player1,
         boardState: updateBoardState(state, action),
       };
-
+    case GameAction.SetGameOver:
+      return {
+        ...state,
+        isGameOver: true,
+      };
     case GameAction.ResetGameBoard:
       return {
         ...state,
+        isGameOver: false,
         gameState: GameState.Player1,
         boardState: [
           ...initialBoardState.map((tempBoardState) => tempBoardState),

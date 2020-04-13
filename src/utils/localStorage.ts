@@ -38,4 +38,12 @@ const getPastVictories = async (): Promise<IPastVictory[]> => {
   }
 };
 
-export { addToPastVictories, getPastVictories };
+const clearPastVictories = async () => {
+  try {
+    await AsyncStorage.removeItem(StorageKeys.PastVictories);
+  } catch (error) {
+    console.log('Error clearing past victories...', error);
+  }
+};
+
+export { addToPastVictories, getPastVictories, clearPastVictories };

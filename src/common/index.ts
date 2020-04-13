@@ -1,6 +1,6 @@
 import { theme } from './theme';
 import { Button, ButtonWithText, SecondaryButton } from './buttons';
-import { H1Text, H2Text, SubTitleText } from './typography';
+import { H1Text, H2Text, SubTitleText, BodyText } from './typography';
 import { Divider, ScreenContainer } from './layout';
 import { Screens } from './constants';
 
@@ -14,6 +14,7 @@ export {
   H1Text,
   H2Text,
   SubTitleText,
+  BodyText,
   // layout
   Divider,
   ScreenContainer,

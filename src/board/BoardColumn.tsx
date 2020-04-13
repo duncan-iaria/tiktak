@@ -16,11 +16,14 @@ interface IProps {
 }
 
 export const BoardColumn = ({ column, columnIndex }: IProps) => {
-  const { dispatch } = useContext(gameStateStore);
+  const {
+    dispatch,
+    state: { isGameOver },
+  } = useContext(gameStateStore);
 
   const onPressed = (tileIndex: number, tileValue: BoardStateType) => {
-    if (tileValue) {
-      // already has a value, do no action
+    if (tileValue || isGameOver) {
+      // already has a value, do no action or game is already over
       return;
     }
 

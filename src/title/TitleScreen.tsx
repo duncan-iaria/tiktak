@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import styled from 'styled-components';
 
+import { isDebugMode } from '../utils';
 import {
   ButtonWithText,
   H1Text,
@@ -37,7 +38,7 @@ export const TitleScreen = ({ navigation }: any) => {
   return (
     <TitleScreenContainer>
       <TitleContainer>
-        <H1Text>TikTak</H1Text>
+        <H1Text>Tik/Tak</H1Text>
         <Divider width="142px" />
         <SubtitleContainer>
           <SubTitleText>a game by duncan iaria</SubTitleText>
@@ -49,12 +50,13 @@ export const TitleScreen = ({ navigation }: any) => {
           onPress={() => navigation.navigate(Screens.Game)}
           text="Let's Play"
         />
-        <View style={{ height: 12 }} />
-        <ButtonWithText
-          activeOpacity={0.9}
-          onPress={() => navigation.navigate(Screens.Results)}
-          text="Results Test"
-        />
+        {isDebugMode() && (
+          <ButtonWithText
+            activeOpacity={0.9}
+            onPress={() => navigation.navigate(Screens.Results)}
+            text="Results Test"
+          />
+        )}
       </ButtonContainer>
     </TitleScreenContainer>
   );

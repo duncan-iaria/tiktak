@@ -8,8 +8,10 @@ import { BoardColumn } from './BoardColumn';
 import { PlayerLabel } from './PlayerLabel';
 import { GameController } from './GameController';
 
+const boardImage = require('../../assets/images/tik-tak-board-01.png');
+
 const BoardBackground = styled(ImageBackground)`
-  background-color: #333;
+  background-color: white;
   flex-direction: row;
   flex: 8;
   justify-content: center;
@@ -30,13 +32,7 @@ export const BoardContainer = ({ navigation }: any) => {
           isActive={gameState === GameState.Player2}
           isFlipped={true}
         />
-        <BoardBackground
-          resizeMode="cover"
-          source={{
-            uri:
-              'https://i.pinimg.com/originals/7f/d6/54/7fd654e4ed2675f4606bd72177eb1fb2.jpg',
-          }}
-        >
+        <BoardBackground resizeMode="cover" source={boardImage}>
           {boardState.map((tempColumn, index) => {
             return (
               <BoardColumn
